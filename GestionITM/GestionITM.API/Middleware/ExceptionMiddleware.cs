@@ -61,15 +61,19 @@ namespace GestionITM.API.Middleware
             };
             context.Response.StatusCode = statusCode;
 
+            // ACÁ el mensaje que se enviará al cliente
+            // Para errores 500 mostramos el mensaje real de la excepción (email duplicado, Error de prueba)
+            var message = statusCode switch
+            {
+                (int)HttpStatusCode.NotFound => "El recurso solicitado no fue encontrado en el sistema del ITM.",
+                (int)HttpStatusCode.BadRequest => "La petición enviada no es válida. Verifique los datos.",
+                _ => ex.Message // ACÁ se agregó para mostrar el mensaje real (email duplicado, Error de prueba).
+            };
+
             var response = new ErrorResponse
             {
                 StatusCode = statusCode,
-                Message = statusCode switch
-                {
-                    (int)HttpStatusCode.NotFound => "El recurso solicitado no fue encontrado en el sistema del ITM.",
-                    (int)HttpStatusCode.BadRequest => "La petición enviada no es válida. Verifique los datos.",
-                    _ => "Ocurrió un error interno en el servidor del ITM."
-                },
+                Message = message,
                 // Si estamos en desarrollo, mostramos el error real. En producción, no.
                 Details = _env.IsDevelopment() ? ex.StackTrace?.ToString() : null
             };

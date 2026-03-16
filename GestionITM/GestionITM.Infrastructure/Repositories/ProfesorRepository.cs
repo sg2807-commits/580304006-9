@@ -33,5 +33,14 @@ namespace GestionITM.Infrastructure.Repositories
             await _context.Profesores.AddAsync(profesor); // Agrega el profesor
             await _context.SaveChangesAsync(); // Gguarda cambios en la DB
         }
+        public async Task<Profesor> GetByIdAsync(int id) 
+        {
+            return await _context.Profesores.FindAsync(id);
+        }
+        public async Task<bool> ExistsByEmailAsync(string email) // AnyAsync devuelve true si encuentra algún profesor con ese email, false si no.
+        {
+            return await _context.Profesores.AnyAsync(p => p.Email == email);
+        }
+
     }
 }

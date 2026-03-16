@@ -13,7 +13,7 @@ namespace GestionITM.Domain.Interfaces // Define qué puede hacer el servicio, p
     public interface IProfesorService
     {
         Task<IEnumerable<Profesor>> GetAllAsync(); // Obtener todos los profesores
-
         Task AddAsync(Profesor profesor); // Registrar profesor
+        Task<Profesor> GetByIdAsync(int id);
     }
 }

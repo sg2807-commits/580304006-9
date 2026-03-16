@@ -36,6 +36,24 @@ namespace GestionITM.API.Controllers
             return Ok(resultado);
         }
 
+        [HttpGet("{id}")] 
+        public async Task<ActionResult<ProfesorDto>> GetById(int id)
+        {
+            var profesor = await _profesorService.GetByIdAsync(id);
+            if (profesor == null)
+                return NotFound();
+
+            var dto = new ProfesorDto
+            {
+                Id = profesor.Id,
+                Nombre = profesor.Nombre,
+                Especialidad = profesor.Especialidad,
+                Email = profesor.Email
+            };
+
+            return Ok(dto);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post(ProfesorCreateDto dto)
         {

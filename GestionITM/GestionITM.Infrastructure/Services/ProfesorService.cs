@@ -27,6 +27,12 @@ namespace GestionITM.Infrastructure.Services
 
         public async Task AddAsync(Profesor profesor)
         {
+            // VALIDACIÓN: Email único
+            if (await _profesorRepository.ExistsByEmailAsync(profesor.Email))
+            {
+                throw new Exception("Ya existe un profesor con ese email");
+            }
+
             // VALIDACIÓN 1: Especialidad no puede ser vacía
             if (string.IsNullOrWhiteSpace(profesor.Especialidad))
             {
@@ -47,6 +53,10 @@ namespace GestionITM.Infrastructure.Services
 
             // Guardar en DB siempre
             await _profesorRepository.AddAsync(profesor);
+        }
+        public async Task<Profesor> GetByIdAsync(int id) 
+        {
+            return await _profesorRepository.GetByIdAsync(id);
         }
     }
 }

@@ -13,7 +13,9 @@ namespace GestionITM.Domain.Interfaces
     public interface IProfesorRepository
     {
         Task<IEnumerable<Profesor>> GetAllAsync(); // Para obtener todos los profesores
-
         Task AddAsync(Profesor profesor); // Agrega profesor
+        Task<Profesor> GetByIdAsync(int id);
+
+        Task<bool> ExistsByEmailAsync(string email);
     }
 }
