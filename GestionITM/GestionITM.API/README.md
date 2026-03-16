@@ -138,3 +138,14 @@ Swagger se configura a través de los paquetes:
 Al ejecutar la API, la interfaz de Swagger suele estar disponible en una ruta similar a:
 
 - `https://localhost:<puerto>/swagger`
+
+## Capturas del módulo profesor
+
+### 1️⃣ Tabla creada en SQL Server
+![Tabla Profesor](Capturas/TablaSQL.png)
+
+### 2️⃣ POST funcionando en Swagger
+![POST Profesor](Capturas/POSTSwagger.png)
+
+### 3️⃣ Respuesta del Middleware ante error
+![Middleware Error](Capturas/MiddlewareError.png)
