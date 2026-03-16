@@ -58,6 +58,13 @@ builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 
+//------------------------------------------------------------------------
+// REGISTRO DEL REPOSITORIO 
+builder.Services.AddScoped<IProfesorRepository, ProfesorRepository>(); 
+// REGISTRO DEL SERVICIO 
+builder.Services.AddScoped<IProfesorService, ProfesorService>();
+//------------------------------------------------------------------------
+
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
