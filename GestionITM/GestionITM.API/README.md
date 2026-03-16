@@ -141,11 +141,11 @@ Al ejecutar la API, la interfaz de Swagger suele estar disponible en una ruta si
 
 ## Capturas del módulo profesor
 
-### 1️⃣ Tabla creada en SQL Server
+### 1️. Tabla creada en SQL Server
 ![Tabla Profesor](Capturas/TablaSQL.png)
 
-### 2️⃣ POST funcionando en Swagger
+### 2️. POST funcionando en Swagger
 ![POST Profesor](Capturas/POSTSwagger.png)
 
-### 3️⃣ Respuesta del Middleware ante error
+### 3️. Respuesta del Middleware ante error
 ![Middleware Error](Capturas/MiddlewareError.png)
