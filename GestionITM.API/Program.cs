@@ -74,7 +74,12 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "GestionITM API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 // Bloque de activación de autenticación y autorización
 app.UseAuthentication();
@@ -83,3 +88,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+app.UseHttpsRedirection();
+
+// app.UseHttpsRedirection();

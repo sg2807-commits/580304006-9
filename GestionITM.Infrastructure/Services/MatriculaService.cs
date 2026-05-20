@@ -28,7 +28,7 @@ namespace GestionITM.Infrastructure.Services
             // ESTO <--- REGLA DE NEGOCIO
             if (curso == null)
             {
-                throw new Exception("Curso no encontrado.");
+                throw new ArgumentException("Curso no encontrado.");
             }
 
             // ESTO <--- REGLA DE NEGOCIO

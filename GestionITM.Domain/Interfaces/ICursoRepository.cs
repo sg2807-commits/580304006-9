@@ -8,5 +8,6 @@ namespace GestionITM.Domain.Interfaces
         Task<Curso?> ObtenerPorIdAsync(int id);
         Task AgregarAsync(Curso curso);
         IQueryable<Curso> ConsultarTodo();
+        Task ActualizarAsync(Curso curso);
     }
 }

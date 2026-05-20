@@ -33,6 +33,10 @@ namespace GestionITM.Infrastructure.Repositories
         {
             return _context.Cursos.AsQueryable();
         }
+        public async Task ActualizarAsync(Curso curso)
+        {
+            _context.Cursos.Update(curso);
+            await _context.SaveChangesAsync();
+        }
     }
-
 }
