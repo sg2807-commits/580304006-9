@@ -26,10 +26,10 @@ try
     Log.Information("Arrancando el servidor GestionITM API...");
 
     // 2. Le decimos a ASPNET que use Serilog y lea toda la configuración del JSON (appsettings.json) para configurar Serilog, incluyendo los sinks, niveles de log, etc.
-    builder.Host.UseSerilog((context, services, configuration) => configuration
-                     .ReadFrom.Configuration(context.Configuration)
-                     .ReadFrom.Services(services)
-                     .Enrich.FromLogContext());
+    //builder.Host.UseSerilog((context, services, configuration) => configuration
+    //                 .ReadFrom.Configuration(context.Configuration)
+    //                 .ReadFrom.Services(services)
+    //                 .Enrich.FromLogContext());
 builder.Logging.AddFilter("Microsoft.AspNetCore.DataProtection", LogLevel.Error);
 
 // Add services to the container.
@@ -96,30 +96,34 @@ builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 builder.Services.AddScoped<IProfesorRepository, ProfesorRepository>();
 builder.Services.AddScoped<IProfesorService, ProfesorService>();
 
+// ESTO <--- dependencias de matrícula
+builder.Services.AddScoped<IMatriculaRepository, MatriculaRepository>();
+builder.Services.AddScoped<IMatriculaService, MatriculaService>();
+
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
 // Nivel Dios: Aplicar migraciones pendientes automáticamente al arrancar
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<ApplicationDbContext>();
-        context.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocurrió un error al aplicar la migración de la base de datos.");
-    }
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    try
+//    {
+//        var context = services.GetRequiredService<ApplicationDbContext>();
+//        context.Database.Migrate();
+//    }
+//    catch (Exception ex)
+//    {
+//        var logger = services.GetRequiredService<ILogger<Program>>();
+//        logger.LogError(ex, "Ocurrió un error al aplicar la migración de la base de datos.");
+//    }
+//}
 
 // 3. Mildleware mágico Nivel 5:  Registra los códigos HTTP 200, 400, 404, 500 aotomaticamente 
 
-app.UseSerilogRequestLogging(); // Middleware de Serilog para registrar las solicitudes HTTP y sus respuestas, incluyendo los códigos de estado. Esto es útil para monitorear el tráfico y detectar errores.
+//app.UseSerilogRequestLogging(); // Middleware de Serilog para registrar las solicitudes HTTP y sus respuestas, incluyendo los códigos de estado. Esto es útil para monitorear el tráfico y detectar errores.
 
 // Configure the HTTP request pipeline. ESCUDO DE EXCEPCIONES GLOBAL
 app.UseMiddleware<ExceptionMiddleware>();
