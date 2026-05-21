@@ -1,4 +1,6 @@
-﻿using GestionITM.Domain.Entities;
+﻿// ARCHIVO: MatriculaRepository.cs
+
+using GestionITM.Domain.Entities;
 using GestionITM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +8,6 @@ namespace GestionITM.Infrastructure.Repositories
 {
     public class MatriculaRepository : IMatriculaRepository
     {
-        // ESTO <--- conexión con EF Core
         private readonly ApplicationDbContext _context;
 
         public MatriculaRepository(ApplicationDbContext context)
@@ -14,25 +15,62 @@ namespace GestionITM.Infrastructure.Repositories
             _context = context;
         }
 
-        // ESTO <--- crear matrícula
-        public async Task<Matricula> CrearMatriculaAsync(Matricula matricula)
-        {
-            await _context.Matriculas.AddAsync(matricula);
+        // ============================================
+        // OBTENER TODAS LAS MATRÍCULAS
+        // ============================================
 
-            return matricula;
+        public async Task<IEnumerable<Matricula>> GetAllAsync()
+        {
+            return await _context.Matriculas
+                .ToListAsync();
         }
 
-        // ESTO <--- buscar curso
+        // ============================================
+        // OBTENER POR ID
+        // ============================================
+
+        public async Task<Matricula?> GetByIdAsync(int id)
+        {
+            return await _context.Matriculas
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        // ============================================
+        // CREAR MATRÍCULA
+        // ============================================
+
+        public async Task CreateAsync(Matricula matricula)
+        {
+            await _context.Matriculas.AddAsync(matricula);
+        }
+
+        // ============================================
+        // ELIMINAR MATRÍCULA
+        // ============================================
+
+        public Task DeleteAsync(Matricula matricula)
+        {
+            _context.Matriculas.Remove(matricula);
+            return Task.CompletedTask;
+        }
+
+        // ============================================
+        // GUARDAR CAMBIOS
+        // ============================================
+
+        public async Task GuardarCambiosAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        // ============================================
+        // OBTENER CURSO
+        // ============================================
+
         public async Task<Curso?> ObtenerCursoPorIdAsync(int cursoId)
         {
             return await _context.Cursos
                 .FirstOrDefaultAsync(c => c.Id == cursoId);
-        }
-
-        // ESTO <--- guardar cambios reales en SQL
-        public async Task GuardarCambiosAsync()
-        {
-            await _context.SaveChangesAsync();
         }
     }
 }

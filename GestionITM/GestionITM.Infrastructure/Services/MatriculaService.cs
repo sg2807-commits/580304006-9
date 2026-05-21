@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿// ARCHIVO: MatriculaService.cs
+
+using AutoMapper;
 using GestionITM.Domain.Dtos;
 using GestionITM.Domain.Entities;
 using GestionITM.Domain.Interfaces;
@@ -18,7 +20,38 @@ namespace GestionITM.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<MatriculaDto> CrearMatriculaAsync(MatriculaCreateDto matriculaDto)
+        // ============================================
+        // OBTENER TODAS LAS MATRÍCULAS
+        // ============================================
+
+        public async Task<IEnumerable<MatriculaDto>> GetAllAsync()
+        {
+            var matriculas = await _matriculaRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<MatriculaDto>>(matriculas);
+        }
+
+        // ============================================
+        // OBTENER MATRÍCULA POR ID
+        // ============================================
+
+        public async Task<MatriculaDto?> GetByIdAsync(int id)
+        {
+            var matricula = await _matriculaRepository.GetByIdAsync(id);
+
+            if (matricula == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<MatriculaDto>(matricula);
+        }
+
+        // ============================================
+        // CREAR MATRÍCULA
+        // ============================================
+
+        public async Task CreateAsync(MatriculaCreateDto matriculaDto)
         {
             // ESTO <--- buscamos el curso
             var curso = await _matriculaRepository
@@ -50,11 +83,29 @@ namespace GestionITM.Infrastructure.Services
                 Estado = "Activa"
             };
 
-            await _matriculaRepository.CrearMatriculaAsync(matricula);
+            await _matriculaRepository.CreateAsync(matricula);
+
+            await _matriculaRepository.GuardarCambiosAsync();
+        }
+
+        // ============================================
+        // ELIMINAR MATRÍCULA
+        // ============================================
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var matricula = await _matriculaRepository.GetByIdAsync(id);
+
+            if (matricula == null)
+            {
+                return false;
+            }
+
+            await _matriculaRepository.DeleteAsync(matricula);
 
             await _matriculaRepository.GuardarCambiosAsync();
 
-            return _mapper.Map<MatriculaDto>(matricula);
+            return true;
         }
     }
 }

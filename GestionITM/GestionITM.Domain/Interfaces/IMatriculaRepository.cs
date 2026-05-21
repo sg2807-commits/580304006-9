@@ -1,16 +1,45 @@
-﻿using GestionITM.Domain.Entities;
+﻿// ARCHIVO: IMatriculaRepository.cs
+
+using GestionITM.Domain.Entities;
 
 namespace GestionITM.Domain.Interfaces
 {
     public interface IMatriculaRepository
     {
-        // ESTO <--- Guarda una matrícula nueva
-        Task<Matricula> CrearMatriculaAsync(Matricula matricula);
+        // ============================================
+        // OBTENER TODAS LAS MATRÍCULAS
+        // ============================================
 
-        // ESTO <--- Busca un curso por Id
-        Task<Curso?> ObtenerCursoPorIdAsync(int cursoId);
+        Task<IEnumerable<Matricula>> GetAllAsync();
 
-        // ESTO <--- Guarda cambios en base de datos
+        // ============================================
+        // OBTENER MATRÍCULA POR ID
+        // ============================================
+
+        Task<Matricula?> GetByIdAsync(int id);
+
+        // ============================================
+        // CREAR MATRÍCULA
+        // ============================================
+
+        Task CreateAsync(Matricula matricula);
+
+        // ============================================
+        // ELIMINAR MATRÍCULA
+        // ============================================
+
+        Task DeleteAsync(Matricula matricula);
+
+        // ============================================
+        // GUARDAR CAMBIOS
+        // ============================================
+
         Task GuardarCambiosAsync();
+
+        // ============================================
+        // OBTENER CURSO
+        // ============================================
+
+        Task<Curso?> ObtenerCursoPorIdAsync(int cursoId);
     }
 }
