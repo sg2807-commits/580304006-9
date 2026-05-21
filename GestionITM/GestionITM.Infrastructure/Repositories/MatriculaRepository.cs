@@ -72,5 +72,10 @@ namespace GestionITM.Infrastructure.Repositories
             return await _context.Cursos
                 .FirstOrDefaultAsync(c => c.Id == cursoId);
         }
+        public async Task<Estudiante?> ObtenerEstudiantePorIdAsync(int estudianteId)
+        {
+            return await _context.Estudiantes
+                .FirstOrDefaultAsync(e => e.Id == estudianteId);
+        }
     }
 }

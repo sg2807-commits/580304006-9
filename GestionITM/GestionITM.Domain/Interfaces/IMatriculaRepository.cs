@@ -41,5 +41,7 @@ namespace GestionITM.Domain.Interfaces
         // ============================================
 
         Task<Curso?> ObtenerCursoPorIdAsync(int cursoId);
+
+        Task<Estudiante?> ObtenerEstudiantePorIdAsync(int estudianteId);
     }
 }
