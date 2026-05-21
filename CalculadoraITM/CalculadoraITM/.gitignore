@@ -27,11 +27,3 @@ packages/
 # Others
 *.tmp
 *.temp
-
-# ESTO <--- logs locales
-Logs/
-*.log
-
-# ESTO <--- compilación
-bin/
-obj/

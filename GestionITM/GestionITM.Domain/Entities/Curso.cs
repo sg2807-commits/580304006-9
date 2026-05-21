@@ -14,8 +14,10 @@ namespace GestionITM.Domain.Entities
         [MaxLength(200)]
         public string Nombre { get; set; } = string.Empty;
 
-        // Créditos académicos del curso
         [Range(0, 30)]
         public int Creditos { get; set; }
+
+        [Range(0, 999)]
+        public int CuposDisponibles { get; set; }
     }
 }
