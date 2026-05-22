@@ -52,10 +52,11 @@ namespace GestionITM.Infrastructure.Repositories
         // ELIMINAR MATRÍCULA
         // ============================================
 
-        public Task DeleteAsync(Matricula matricula)
+        public async Task DeleteAsync(Matricula matricula)
         {
             _context.Matriculas.Remove(matricula);
-            return Task.CompletedTask;
+
+            await Task.CompletedTask;
         }
 
         // ============================================
@@ -94,8 +95,9 @@ namespace GestionITM.Infrastructure.Repositories
         public async Task<bool> ExisteMatriculaAsync(int estudianteId, int cursoId)
         {
             return await _context.Matriculas
-                .AnyAsync(m => m.EstudianteId == estudianteId &&
-                                m.CursoId == cursoId);
+                .AnyAsync(m =>
+                    m.EstudianteId == estudianteId &&
+                    m.CursoId == cursoId);
         }
     }
 }

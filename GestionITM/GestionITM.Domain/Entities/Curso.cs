@@ -19,5 +19,9 @@ namespace GestionITM.Domain.Entities
 
         [Range(0, 999)]
         public int CuposDisponibles { get; set; }
+
+        // ESTO <--- relación 1 a muchos con matrículas
+        public ICollection<Matricula> Matriculas { get; set; }
+            = new List<Matricula>();
     }
 }

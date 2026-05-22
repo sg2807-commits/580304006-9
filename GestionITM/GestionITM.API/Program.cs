@@ -51,45 +51,69 @@ builder.Services.AddSwaggerGen(c =>
 
     // Le dice a Swagger que incluya los comentarios XML para mejorar la documentación de la API. Esto es especialmente útil para describir los endpoints, parámetros y respuestas.
     c.IncludeXmlComments(xmlPath);
+
+    // ESTO <--- configuración JWT en Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Ingrese el token JWT así: Bearer {token}"
+    });
+
+    // ESTO <--- activar candado JWT
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+{
+    {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        },
+        Array.Empty<string>()
+    }
+});
 });
 
 // 1. Configurar la cadena de conexión
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configuración de JWT Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
+    // Configuración de JWT Authentication
+    // ESTO <--- configuración JWT
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            // Nota docente: este warning (CS8604) aparece porque builder.Configuration["Jwt:Key"]
-            // podría ser null y Encoding.UTF8.GetBytes no acepta null.
-            // Una forma correcta de resolverlo sería:
-            //
-            // var jwtKey = builder.Configuration["Jwt:Key"];
-            // if (string.IsNullOrWhiteSpace(jwtKey))
-            // {
-            //     throw new InvalidOperationException("Jwt:Key no está configurado en appsettings.json o en las variables de entorno.");
-            // }
-            // IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-            //
-            // Es mejor que usar el operador ! (null-forgiving), porque así el sistema falla
-            // de forma clara al arrancar cuando falta la configuración.
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-        };
-    });
+            options.RequireHttpsMetadata = false;
+
+            options.SaveToken = true;
+
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+
+                ClockSkew = TimeSpan.Zero
+            };
+        });
 
 
-// 2. Registrar el Repositorio (Inyección de Dependencias)
-// AddScoped significa: "Crea una instancia por cada petición HTTP"
-builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
+    // 2. Registrar el Repositorio (Inyección de Dependencias)
+    // AddScoped significa: "Crea una instancia por cada petición HTTP"
+    builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 

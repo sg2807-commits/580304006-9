@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GestionITM.Domain.Entities
 {
@@ -6,25 +7,19 @@ namespace GestionITM.Domain.Entities
     {
         public int Id { get; set; }
 
-        // ============================================
-        // RELACIÓN CON ESTUDIANTE
-        // ============================================
-
+        // ESTO <--- llave foránea estudiante
         public int EstudianteId { get; set; }
 
+        // ESTO <--- navegación estudiante
+        [ForeignKey("EstudianteId")]
         public Estudiante? Estudiante { get; set; }
 
-        // ============================================
-        // RELACIÓN CON CURSO
-        // ============================================
-
+        // ESTO <--- llave foránea curso
         public int CursoId { get; set; }
 
+        // ESTO <--- navegación curso
+        [ForeignKey("CursoId")]
         public Curso? Curso { get; set; }
-
-        // ============================================
-        // DATOS MATRÍCULA
-        // ============================================
 
         [Required]
         [MaxLength(20)]

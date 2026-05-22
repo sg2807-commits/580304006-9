@@ -36,24 +36,21 @@ namespace GestionITM.API.Controllers
         }
 
         /// <summary>
-        /// Registra un nuevo profesor al sistema del ITM
+        /// Registra un nuevo profesor en el sistema del ITM.
         /// </summary>
-        /// <remarks>
-        /// Ejemplo de petición:
-        /// 
-        /// POST /api/profesor
-        /// {
-        /// "nombre": "Juan Pérez",
-        /// "email": "juan.perez@itm.edu.do"
-        /// "especialidad": "Matemáticas"
-        /// }
-        /// 
-        /// <\remarks>
-        /// <param name="profesorCreateDto">Objeto con los datos del profesor a registrar</param>
-        /// <response code="200">Profesor registrado con éxito</response>
-        /// <response code="400">Error al registrar el profesor (ej. especialidad vacía)</response>
-        /// <response code="401">No autorizado (falta token o token inválido)</response>
-      
+        /// <param name="profesorCreateDto">
+        /// Datos del profesor a registrar.
+        /// </param>
+        /// <response code="200">
+        /// Profesor registrado con éxito.
+        /// </response>
+        /// <response code="400">
+        /// Error al registrar el profesor.
+        /// </response>
+        /// <response code="401">
+        /// No autorizado.
+        /// </response>
+
         // POST: api/profesor
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -21,7 +21,10 @@ namespace GestionITM.Domain.Entities
         // Práctica Migración EFCore
         [MaxLength(20)]
         public string Telefono { get; set; } = string.Empty;
-     
+
+        // ESTO <--- relación 1 a muchos con matrículas
+        public ICollection<Matricula> Matriculas { get; set; }
+            = new List<Matricula>();
 
     }
 }
