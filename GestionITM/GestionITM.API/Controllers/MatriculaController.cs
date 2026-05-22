@@ -1,15 +1,14 @@
-﻿// ARCHIVO: MatriculaController.cs
-
-using GestionITM.Domain.Dtos;
+﻿using GestionITM.Domain.Dtos;
 using GestionITM.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionITM.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class MatriculaController : ControllerBase
     {
+        // ESTO <--- inyección del servicio
         private readonly IMatriculaService _matriculaService;
 
         public MatriculaController(IMatriculaService matriculaService)
@@ -17,22 +16,16 @@ namespace GestionITM.API.Controllers
             _matriculaService = matriculaService;
         }
 
-        // ============================================
-        // OBTENER TODAS LAS MATRÍCULAS
-        // ============================================
-
+        // ESTO <--- obtener todas las matrículas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MatriculaDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<MatriculaDto>>> Get()
         {
             var matriculas = await _matriculaService.GetAllAsync();
 
             return Ok(matriculas);
         }
 
-        // ============================================
-        // OBTENER MATRÍCULA POR ID
-        // ============================================
-
+        // ESTO <--- obtener matrícula por id
         [HttpGet("{id}")]
         public async Task<ActionResult<MatriculaDto>> GetById(int id)
         {
@@ -40,41 +33,38 @@ namespace GestionITM.API.Controllers
 
             if (matricula == null)
             {
-                return NotFound($"No existe una matrícula con ID {id}");
+                return NotFound(new
+                {
+                    message = "Matrícula no encontrada."
+                });
             }
 
             return Ok(matricula);
         }
 
-        // ============================================
-        // CREAR MATRÍCULA
-        // ============================================
-
+        // ESTO <--- crear matrícula
         [HttpPost]
-        public async Task<ActionResult> Create(MatriculaCreateDto dto)
+        public async Task<ActionResult> Post(MatriculaCreateDto matriculaDto)
         {
             try
             {
-                await _matriculaService.CreateAsync(dto);
+                await _matriculaService.CreateAsync(matriculaDto);
 
                 return Ok(new
                 {
-                    mensaje = "Matrícula creada correctamente"
+                    message = "Matrícula creada correctamente."
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(new
                 {
-                    error = ex.Message
+                    message = ex.Message
                 });
             }
         }
 
-        // ============================================
-        // ELIMINAR MATRÍCULA
-        // ============================================
-
+        // ESTO <--- eliminar matrícula
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -82,12 +72,15 @@ namespace GestionITM.API.Controllers
 
             if (!eliminado)
             {
-                return NotFound($"No existe una matrícula con ID {id}");
+                return NotFound(new
+                {
+                    message = "Matrícula no encontrada."
+                });
             }
 
             return Ok(new
             {
-                mensaje = "Matrícula eliminada correctamente"
+                message = "Matrícula eliminada correctamente."
             });
         }
     }

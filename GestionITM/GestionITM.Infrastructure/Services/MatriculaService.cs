@@ -92,11 +92,7 @@ namespace GestionITM.Infrastructure.Services
                 Estado = "Activa"
             };
 
-            await _matriculaRepository.CreateAsync(matricula);
-
-            await _matriculaRepository.GuardarCambiosAsync();
-
-            // ESTO <--- evitar matrícula duplicada
+            // ESTO <--- validar matrícula duplicada ANTES de guardar
             var yaMatriculado = await _matriculaRepository
                 .ExisteMatriculaAsync(matriculaDto.EstudianteId, matriculaDto.CursoId);
 
@@ -104,6 +100,11 @@ namespace GestionITM.Infrastructure.Services
             {
                 throw new Exception("El estudiante ya está matriculado en este curso.");
             }
+
+            // ESTO <--- guardar matrícula
+            await _matriculaRepository.CreateAsync(matricula);
+
+            await _matriculaRepository.GuardarCambiosAsync();
         }
 
         // ============================================
