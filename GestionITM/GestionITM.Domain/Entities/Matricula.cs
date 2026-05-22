@@ -6,17 +6,30 @@ namespace GestionITM.Domain.Entities
     {
         public int Id { get; set; }
 
-        // Relación con Estudiante
+        // ============================================
+        // RELACIÓN CON ESTUDIANTE
+        // ============================================
+
         public int EstudianteId { get; set; }
 
-        // Relación con Curso
+        public Estudiante? Estudiante { get; set; }
+
+        // ============================================
+        // RELACIÓN CON CURSO
+        // ============================================
+
         public int CursoId { get; set; }
+
+        public Curso? Curso { get; set; }
+
+        // ============================================
+        // DATOS MATRÍCULA
+        // ============================================
 
         [Required]
         [MaxLength(20)]
-        public string Periodo { get; set; } = string.Empty; // Ej: 2026-1
+        public string Periodo { get; set; } = string.Empty;
 
-        // Estado de la matrícula (por ejemplo: Activa, Cancelada, Finalizada)
         [MaxLength(20)]
         public string Estado { get; set; } = string.Empty;
     }

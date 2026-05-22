@@ -53,12 +53,22 @@ namespace GestionITM.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(MatriculaCreateDto dto)
         {
-            await _matriculaService.CreateAsync(dto);
-
-            return Ok(new
+            try
             {
-                mensaje = "Matrícula creada correctamente"
-            });
+                await _matriculaService.CreateAsync(dto);
+
+                return Ok(new
+                {
+                    mensaje = "Matrícula creada correctamente"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    error = ex.Message
+                });
+            }
         }
 
         // ============================================

@@ -22,6 +22,8 @@ namespace GestionITM.Infrastructure.Repositories
         public async Task<IEnumerable<Matricula>> GetAllAsync()
         {
             return await _context.Matriculas
+                .Include(m => m.Estudiante)
+                .Include(m => m.Curso)
                 .ToListAsync();
         }
 
@@ -32,6 +34,8 @@ namespace GestionITM.Infrastructure.Repositories
         public async Task<Matricula?> GetByIdAsync(int id)
         {
             return await _context.Matriculas
+                .Include(m => m.Estudiante)
+                .Include(m => m.Curso)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -72,10 +76,26 @@ namespace GestionITM.Infrastructure.Repositories
             return await _context.Cursos
                 .FirstOrDefaultAsync(c => c.Id == cursoId);
         }
+
+        // ============================================
+        // OBTENER ESTUDIANTE
+        // ============================================
+
         public async Task<Estudiante?> ObtenerEstudiantePorIdAsync(int estudianteId)
         {
             return await _context.Estudiantes
                 .FirstOrDefaultAsync(e => e.Id == estudianteId);
+        }
+
+        // ============================================
+        // MATRÍCULA EXISTENTE
+        // ============================================
+
+        public async Task<bool> ExisteMatriculaAsync(int estudianteId, int cursoId)
+        {
+            return await _context.Matriculas
+                .AnyAsync(m => m.EstudianteId == estudianteId &&
+                                m.CursoId == cursoId);
         }
     }
 }

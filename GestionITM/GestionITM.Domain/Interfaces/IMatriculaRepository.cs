@@ -42,6 +42,16 @@ namespace GestionITM.Domain.Interfaces
 
         Task<Curso?> ObtenerCursoPorIdAsync(int cursoId);
 
+        // ============================================
+        // OBTENER ESTUDIANTE
+        // ============================================
+
         Task<Estudiante?> ObtenerEstudiantePorIdAsync(int estudianteId);
+
+        // ============================================
+        // MATRÍCULA EXISTENTE
+        // ============================================
+
+        Task<bool> ExisteMatriculaAsync(int estudianteId, int cursoId);
     }
 }

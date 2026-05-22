@@ -53,6 +53,15 @@ namespace GestionITM.Infrastructure.Services
 
         public async Task CreateAsync(MatriculaCreateDto matriculaDto)
         {
+            // ESTO <--- validar estudiante
+            var estudiante = await _matriculaRepository
+                .ObtenerEstudiantePorIdAsync(matriculaDto.EstudianteId);
+
+            if (estudiante == null)
+            {
+                throw new Exception("El estudiante no existe.");
+            }
+
             // ESTO <--- buscamos el curso
             var curso = await _matriculaRepository
                 .ObtenerCursoPorIdAsync(matriculaDto.CursoId);
@@ -86,6 +95,15 @@ namespace GestionITM.Infrastructure.Services
             await _matriculaRepository.CreateAsync(matricula);
 
             await _matriculaRepository.GuardarCambiosAsync();
+
+            // ESTO <--- evitar matrícula duplicada
+            var yaMatriculado = await _matriculaRepository
+                .ExisteMatriculaAsync(matriculaDto.EstudianteId, matriculaDto.CursoId);
+
+            if (yaMatriculado)
+            {
+                throw new Exception("El estudiante ya está matriculado en este curso.");
+            }
         }
 
         // ============================================
