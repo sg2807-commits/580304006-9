@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-using GestionITM.Domain.Interfaces;
+using GestionITM.Domain.Dtos;
 using GestionITM.Domain.Entities;
+using GestionITM.Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GestionITM.API.Controllers
 {
@@ -33,6 +34,17 @@ namespace GestionITM.API.Controllers
                 return NotFound(new { message = $"Curso con ID {id} no encontrado." });
             }
             return Ok(curso);
+        }
+
+        // GET: api/curso/paginado
+        [HttpGet("paginado")]
+        public async Task<ActionResult> GetPaginado(
+            [FromQuery] CursoFilterDto filtro)
+        {
+            var resultado =
+                await _repository.ObtenerPaginadoAsync(filtro);
+
+            return Ok(resultado);
         }
 
         // POST: api/curso

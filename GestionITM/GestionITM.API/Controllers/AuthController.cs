@@ -25,7 +25,7 @@ namespace GestionITM.API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, "Samuel"),
-                new Claim(ClaimTypes.Role, "Administrador")
+                new Claim(ClaimTypes.Role, "Estudiante")
             };
 
             // ESTO <--- llave secreta

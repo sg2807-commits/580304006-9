@@ -1,6 +1,7 @@
 using GestionITM.Domain.Entities;
 using GestionITM.Domain.Interfaces;
-using GestionITM.Infrastructure;
+using GestionITM.Domain.Dtos;
+using GestionITM.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GestionITM.Infrastructure.Repositories
@@ -27,7 +28,43 @@ namespace GestionITM.Infrastructure.Repositories
         public async Task AgregarAsync(Curso curso)
         {
             await _context.Cursos.AddAsync(curso);
+
             await _context.SaveChangesAsync();
+        }
+
+        // ESTO <--- paginación con IQueryable
+        public async Task<PagedResult<Curso>> ObtenerPaginadoAsync(
+            CursoFilterDto filtro)
+        {
+            IQueryable<Curso> query = _context.Cursos.AsQueryable();
+
+            // ESTO <--- filtro opcional por nombre
+            if (!string.IsNullOrWhiteSpace(filtro.BusquedaNombre))
+            {
+                query = query.Where(c =>
+                    c.Nombre.Contains(filtro.BusquedaNombre));
+            }
+
+            var totalRegistros = await query.CountAsync();
+
+            var cursos = await query
+                .Skip((filtro.Pagina - 1)
+                    * filtro.RegistrosPorPagina)
+                .Take(filtro.RegistrosPorPagina)
+                .ToListAsync();
+
+            return new PagedResult<Curso>
+            {
+                Items = cursos,
+                PaginaActual = filtro.Pagina,
+                RegistrosPorPagina =
+                    filtro.RegistrosPorPagina,
+                TotalRegistros = totalRegistros,
+                TotalPaginas =
+                    (int)Math.Ceiling(
+                        (double)totalRegistros /
+                        filtro.RegistrosPorPagina)
+            };
         }
     }
 }

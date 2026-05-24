@@ -1,5 +1,6 @@
 ﻿using GestionITM.Domain.Dtos;
 using GestionITM.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionITM.API.Controllers
@@ -43,6 +44,7 @@ namespace GestionITM.API.Controllers
         }
 
         // ESTO <--- crear matrícula
+        [Authorize(Roles = "Estudiante")]
         [HttpPost]
         public async Task<ActionResult> Post(MatriculaCreateDto matriculaDto)
         {
