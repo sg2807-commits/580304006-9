@@ -1,0 +1,20 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestionITM.AppMovil.Views.MatriculaPage">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label Text="Matricular curso"
+               FontSize="24"
+               HorizontalOptions="Center"/>
+
+        <Entry x:Name="CursoIdEntry"
+               Placeholder="ID del curso"
+               Keyboard="Numeric"/>
+
+        <Button Text="Matricular"
+                Clicked="OnMatricularClicked"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>

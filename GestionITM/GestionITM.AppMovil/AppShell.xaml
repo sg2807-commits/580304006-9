@@ -1,0 +1,22 @@
+<Shell
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:GestionITM.AppMovil.Views"
+    x:Class="GestionITM.AppMovil.AppShell">
+
+    <ShellContent
+        Title="Login"
+        Route="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}" />
+
+    <ShellContent
+        Title="Cursos"
+        Route="Cursos"
+        ContentTemplate="{DataTemplate views:CursosPage}" />
+
+    <ShellContent
+        Title="Matricula"
+        Route="Matricula"
+        ContentTemplate="{DataTemplate views:MatriculaPage}" />
+
+</Shell>

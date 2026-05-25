@@ -1,0 +1,48 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestionITM.AppMovil.Views.CursosPage">
+
+    <VerticalStackLayout Padding="20">
+
+        <Label Text="Cursos disponibles"
+               FontSize="24"
+               HorizontalOptions="Center"/>
+
+        <ActivityIndicator x:Name="Loading"
+                           IsVisible="False"
+                           IsRunning="False"/>
+
+        <CollectionView x:Name="CursosList"
+                        RemainingItemsThreshold="1"
+                        RemainingItemsThresholdReached="CursosList_RemainingItemsThresholdReached">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="5">
+                        <VerticalStackLayout>
+
+                            <Label Text="{Binding Nombre}"
+                                   FontAttributes="Bold"/>
+
+                            <Label Text="{Binding Codigo}"/>
+
+                            <Label Text="{Binding CuposDisponibles}"/>
+
+                            <Button Text="Matricular"
+                                    Clicked="OnMatricularClicked"/>
+
+                            <Button Text="Cerrar sesión"
+                                    BackgroundColor="Red"
+                                    TextColor="White"
+                                    Clicked="OnLogoutClicked"/>
+
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </VerticalStackLayout>
+
+</ContentPage>
